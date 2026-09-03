@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>「何食べた？」オンライン栄養サポート ベータ募集</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F6F1E4;
+    --paper-deep: #EFE7D2;
+    --ink: #2E2A1F;
+    --ink-soft: #5C5646;
+    --olive: #57633F;
+    --olive-deep: #414A2E;
+    --mustard: #D99A2B;
+    --mustard-deep: #B87F1D;
+    --line: rgba(46, 42, 31, 0.14);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Noto Sans JP', sans-serif;
+    line-height: 1.85;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .display {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  a { color: inherit; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    padding: 84px 0 64px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bowl {
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, var(--mustard) 0%, var(--mustard) 42%, transparent 43%);
+    opacity: 0.18;
+  }
+
+  .eyebrow-plain {
+    font-size: 15px;
+    color: var(--olive-deep);
+    font-weight: 700;
+    margin-bottom: 18px;
+  }
+
+  .hero h1 {
+    font-size: clamp(30px, 5vw, 44px);
+    font-weight: 900;
+    line-height: 1.5;
+    letter-spacing: 0.01em;
+  }
+
+  .hero p.lead {
+    margin-top: 22px;
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 34em;
+  }
+
+  .cta-button {
+    display: inline-block;
+    margin-top: 34px;
+    background: var(--olive);
+    color: #FBF8EF;
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    text-decoration: none;
+    padding: 16px 34px;
+    border-radius: 40px;
+    box-shadow: 0 6px 0 var(--olive-deep);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .cta-button:hover {
+    transform: translateY(2px);
+    box-shadow: 0 4px 0 var(--olive-deep);
+  }
+  .cta-sub {
+    display: block;
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- Section shell ---------- */
+  section {
+    padding: 56px 0;
+    border-top: 1px solid var(--line);
+  }
+
+  section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+
+  /* ---------- Problem ---------- */
+  .problem-quote {
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--olive-deep);
+    border-left: 4px solid var(--mustard);
+    padding-left: 20px;
+    margin: 0 0 22px 0;
+  }
+
+  /* ---------- Service cards ---------- */
+  .service-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 8px;
+  }
+  .service-item {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    background: var(--paper-deep);
+    border-radius: 18px;
+    padding: 22px 24px;
+  }
+  .service-icon {
+    flex: none;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--olive);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+  }
+  .service-item h3 {
+    font-size: 17px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .service-item p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+
+  /* ---------- Price ---------- */
+  .price-box {
+    background: var(--olive);
+    color: #FBF8EF;
+    border-radius: 22px;
+    padding: 36px 30px;
+    text-align: center;
+  }
+  .price-box .amount {
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-weight: 900;
+    font-size: 46px;
+  }
+  .price-box .amount span {
+    font-size: 18px;
+    font-weight: 500;
+    margin-left: 4px;
+  }
+  .price-box .note {
+    margin-top: 14px;
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  /* ---------- Steps ---------- */
+  .steps {
+    counter-reset: step;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .step {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .step:last-child { border-bottom: none; }
+  .step::before {
+    content: counter(step);
+    font-family: 'Zen Maru Gothic', sans-serif;
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--mustard-deep);
+    width: 40px;
+    height: 40px;
+    border: 2px solid var(--mustard);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .step h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .step p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+  }
+
+  /* ---------- Audience ---------- */
+  .audience-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .audience-list li {
+    display: flex;
+    gap: 10px;
+    font-size: 15.5px;
+    color: var(--ink);
+  }
+  .audience-list li::before {
+    content: "🍚";
+    flex: none;
+  }
+
+  /* ---------- Notes ---------- */
+  .notes {
+    font-size: 13px;
+    color: var(--ink-soft);
+    background: var(--paper-deep);
+    border-radius: 14px;
+    padding: 20px 22px;
+  }
+  .notes p { margin: 0 0 8px 0; }
+  .notes p:last-child { margin-bottom: 0; }
+
+  /* ---------- Final CTA ---------- */
+  .final-cta {
+    text-align: center;
+    padding: 64px 0 80px;
+  }
+  .final-cta h2 {
+    font-size: 26px;
+    margin-bottom: 14px;
+  }
+  .final-cta p {
+    color: var(--ink-soft);
+    margin-bottom: 28px;
+  }
+
+  footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--ink-soft);
+    padding: 28px 0 40px;
+  }
+
+  @media (max-width: 480px) {
+    .hero { padding: 56px 0 40px; }
+    section { padding: 42px 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap hero">
+  <div class="hero-bowl"></div>
+  <div class="eyebrow-plain">オンライン栄養サポート・ベータ体験募集</div>
+  <h1>記録するだけで終わらせない。<br>管理栄養士が、毎週いっしょに見てくれる。</h1>
+  <p class="lead">
+    食事記録アプリ「何食べた？」を使いながら、管理栄養士が週に1回オンラインで伴走します。
+    ひとりで頑張るダイエットに疲れた方へ、少人数限定のベータ体験です。
+  </p>
+  <a class="cta-button" href="https://twitter.com/sapporoendo" target="_blank" rel="noopener">
+    Twitter DMで応募する
+  </a>
+  <span class="cta-sub">＠sapporoendo まで「ベータ参加希望」とメッセージをお送りください</span>
+</div>
+
+<section class="wrap">
+  <h2>こんな経験、ありませんか</h2>
+  <p class="problem-quote">
+    アプリに食事を記録しても、続かない。<br>
+    誰かに見てもらえるわけでもなく、結局ひとりで悩んでしまう。
+  </p>
+  <p>
+    「痩せたい」という気持ちと、「痩せさせる技術を持った管理栄養士」は、
+    実はなかなか出会えていません。相性の合う専門家に、気軽に・継続的に相談できる場所を作りたいと考えました。
+  </p>
+</section>
+
+<section class="wrap">
+  <h2>ベータ体験の内容</h2>
+  <div class="service-list">
+    <div class="service-item">
+      <div class="service-icon">📱</div>
+      <div>
+        <h3>食事記録アプリ「何食べた？」</h3>
+        <p>食べたものや、そのときの気分をアプリに記録するだけ。難しい入力は必要ありません。</p>
+      </div>
+    </div>
+    <div class="service-item">
+      <div class="service-icon">🥗</div>
+      <div>
+        <h3>管理栄養士による週1回のオンライン面談</h3>
+        <p>記録を見ながら、なぜ食べてしまったのか、どうすれば続けられるかを一緒に考えます。月4回。</p>
+      </div>
+    </div>
+    <div class="service-item">
+      <div class="service-icon">👨‍⚕️</div>
+      <div>
+        <h3>医師監修</h3>
+        <p>肥満症診療を専門とする医師が、サービス設計を監修しています。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>料金</h2>
+  <div class="price-box">
+    <div class="amount">¥5,000<span>/ 月（税込）</span></div>
+    <div class="note">管理栄養士によるオンライン面談 月4回込み</div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>参加までの流れ</h2>
+  <div class="steps">
+    <div class="step">
+      <div><h3>Twitter DMでご連絡</h3><p>「ベータ参加希望」とメッセージをお送りください。</p></div>
+    </div>
+    <div class="step">
+      <div><h3>簡単なヒアリング</h3><p>現在の状況や希望を、DMまたはオンラインで簡単に伺います。</p></div>
+    </div>
+    <div class="step">
+      <div><h3>アプリ登録・初回面談</h3><p>アプリの使い方をご案内し、担当管理栄養士と初回の面談を行います。</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <h2>こんな方におすすめです</h2>
+  <ul class="audience-list">
+    <li>自己流のダイエットで、リバウンドを繰り返している</li>
+    <li>忙しくて通院や対面の栄養指導に通う時間がない</li>
+    <li>ひとりで頑張るのではなく、伴走してくれる専門家がほしい</li>
+    <li>本気で取り組みたいが、何から始めればいいか分からない</li>
+  </ul>
+</section>
+
+<section class="wrap">
+  <h2>ご案内・注意事項</h2>
+  <div class="notes">
+    <p>・本サービスは医師の診察や医療行為ではありません。持病のある方・治療中の方は、必ず主治医にご相談のうえお申し込みください。</p>
+    <p>・本サービスはサービス改善を目的としたベータ体験（試行提供）です。ご参加時に、内容についての簡単な説明・同意をお願いしています。</p>
+    <p>・オンラインでの実施となります。人数に限りがございますので、状況により募集を終了する場合があります。</p>
+  </div>
+</section>
+
+<div class="wrap final-cta">
+  <h2>まずはDMでお気軽にご連絡ください</h2>
+  <p>「ベータ参加希望」とひとことお送りいただければ、こちらからご案内します。</p>
+  <a class="cta-button" href="https://twitter.com/sapporoendo" target="_blank" rel="noopener">
+    Twitter DMで応募する
+  </a>
+</div>
+
+<footer>
+  医師監修｜個人プロジェクトとして運営しています
+</footer>
+
+</body>
+</html>
